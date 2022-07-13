@@ -146,12 +146,115 @@ paths:
                   dateOfBirth: '1996-08-24'
         description: Post the necessary fields for the API to create a new user.
       description: Create a new user.
+  /users/verification:
+    post:
+      summary: Request Email Address Verification
+      tags: []
+      responses:
+        '200':
+          $ref: '#/components/responses/Success'
+        '400':
+          $ref: '#/components/responses/Error'
+      operationId: post-users-verifications
+      description: Request Email Address Verification
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                userId:
+                  type: integer
+            examples: {}
+    parameters: []
+  '/users/verifications/{verificationId}':
+    get:
+      summary: Verify Email Address
+      tags: []
+      responses:
+        '200':
+          $ref: '#/components/responses/Success'
+        '400':
+          $ref: '#/components/responses/Error'
+      operationId: get-users-verifications
+      description: Validate Email Address using Token and User ID provided from email link
+      parameters:
+        - schema:
+            type: string
+          in: header
+          name: token
+        - schema:
+            type: string
+          in: header
+          name: userId
+    parameters:
+      - schema:
+          type: string
+        name: verificationId
+        in: path
+        required: true
   /accounts:
     post:
-      summary: f
+      summary: Create a new account
       tags: []
       responses: {}
       operationId: post-accounts
+      description: 'Creates a new account, new aaccount administrator and sends a verification email to the email provided'
+      x-internal: false
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              x-examples:
+                example-1:
+                  username: bob123
+                  password: somePassword
+                  first_name: Bob
+                  last_name: Andrews
+                  email: bobandrews@email.com
+                  country: 1
+                  timezone: EST
+                  language_id: 1
+                  dislay_in_metric: true
+              properties:
+                username:
+                  type: string
+                  description: Username that will be used to login to the account
+                password:
+                  type: string
+                  description: Password that will be used to login to the account
+                firstName:
+                  type: string
+                  description: First name of the user account
+                lastName:
+                  type: string
+                  description: Last name of the user account
+                email:
+                  type: string
+                  description: email address used for alerts and notifications
+                country:
+                  type: integer
+                  description: 'Optional: Country code for user account'
+                timezone:
+                  type: string
+                  description: Timezone for user account
+                languageId:
+                  type: integer
+                dislayInMetric:
+                  type: boolean
+              required:
+                - username
+                - password
+                - firstName
+                - lastName
+                - email
+                - timezone
+                - languageId
+                - dislayInMetric
+            examples: {}
 components:
   schemas:
     User:
@@ -195,4 +298,81 @@ components:
         - email
         - emailVerified
       x-internal: false
+    Error:
+      type: object
+      x-examples:
+        example-1:
+          response: error
+          error:
+            code: 1234
+            message: something Happened
+      examples:
+        - error:
+            code: 0
+            message: string
+      description: Generic Error response for SenseThis API
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: integer
+            message:
+              type: string
+          required:
+            - code
+            - message
   securitySchemes: {}
+  responses:
+    Success:
+      description: Success Response
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              response:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  message:
+                    type: string
+          examples:
+            Success:
+              value:
+                success: true
+                response:
+                  code: 1
+                  message: Success
+    Error:
+      description: Error Response
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              response:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  message:
+                    type: string
+            x-examples:
+              example-1:
+                success: false
+                response:
+                  code: 0
+                  message: string
+          examples:
+            Error:
+              value:
+                success: false
+                response:
+                  code: 2
+                  message: Invalid Parameter
