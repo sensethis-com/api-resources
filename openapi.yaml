@@ -176,7 +176,7 @@ paths:
     parameters: []
   '/users/verifications/{verificationId}':
     get:
-      summary: Verify Email Address
+      summary: Verify Email Address2
       responses:
         '200':
           $ref: '#/components/responses/Success'
