@@ -1,12 +1,13 @@
 openapi: 3.1.0
-x-stoplight:
-  id: ij657sfrmmszv
 info:
   title: SenseThis
   version: '1.0'
   description: 'API documentation for SenseThis devices, account and user management'
 servers:
-  - url: api.sensethis.com
+  - url: api.sensethis.com/v1
+    description: Primary API Server
+  - url: api2.sensethis.com/v1
+    description: Secondary API Server
 paths:
   '/users/{userId}':
     parameters:
@@ -260,6 +261,7 @@ paths:
                 - languageId
                 - dislayInMetric
             examples: {}
+    parameters: []
 components:
   schemas:
     User:
@@ -303,30 +305,6 @@ components:
         - email
         - emailVerified
       x-internal: false
-    Error:
-      type: object
-      x-examples:
-        example-1:
-          response: error
-          error:
-            code: 1234
-            message: something Happened
-      examples:
-        - error:
-            code: 0
-            message: string
-      description: Generic Error response for SenseThis API
-      properties:
-        error:
-          type: object
-          properties:
-            code:
-              type: integer
-            message:
-              type: string
-          required:
-            - code
-            - message
   securitySchemes: {}
   responses:
     Success:
