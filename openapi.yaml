@@ -8,6 +8,10 @@ servers:
     description: Primary API Server
   - url: api2.sensethis.com/v1
     description: Secondary API Server
+  - url: auth.sensethis.com/v1
+    description: Primary Auth Server
+  - url: auth2.sensethis.com/v1
+    description: Secondary Auth Server
 paths:
   '/users/{userId}':
     parameters:
