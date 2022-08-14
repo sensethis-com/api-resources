@@ -211,7 +211,7 @@ paths:
       tags: []
       responses: {}
       operationId: post-accounts
-      description: 'Creates a new account, new aaccount administrator and sends a verification email to the email provided'
+      description: 'Creates a new account, new aaccount administrator and sends a verification email to the email provided.'
       x-internal: false
       requestBody:
         content:
